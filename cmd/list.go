@@ -18,7 +18,8 @@ var listCmd = &cobra.Command{
 		}
 		fmt.Println("Available tempates")
 		for _, e := range entreis {
-			fmt.Println("-", e.Name())
+			meta, _ := internal.LoadMetadata(e.Name())
+			fmt.Printf("- %s: %s\n", meta.Name, meta.Description)
 		}
 		return nil
 	},

@@ -1,6 +1,20 @@
 {
   "name": "express-ts",
-  "description": "Production-ready Express + TypeScript API",
-  "flags": ["--port", "--ts"],
-  "defaultPort": 3000
+  "displayName": "Express + TypeScript",
+  "description": "Production-ready Express API with TypeScript",
+  "language": "typescript",
+  "framework": "express",
+  "variables": {
+    "port": {
+      "flag": "--port",
+      "type": "number",
+      "default": 3000,
+      "description": "Port number for the server"
+    }
+  },
+  "flags": {
+    "ts": {
+      "description": "Use TypeScript"
+    }
+  }
 }
