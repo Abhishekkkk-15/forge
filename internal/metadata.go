@@ -18,5 +18,7 @@ type TemplateMetadata struct {
 	Name        string              `json:"name"`
 	Description string              `json:"description"`
 	Variables   map[string]Variable `json:"variables"`
+	Framework   string              `json:"framework"`
+	Language    string              `json:"language"`
 	Flags       map[string]Flag     `json:"flags"`
 }

@@ -19,6 +19,8 @@ var infoCmd = &cobra.Command{
 
 		fmt.Println("Name:       ", meta.Name)
 		fmt.Println("Description:", meta.Description)
+		fmt.Println("Language:", meta.Language)
+		fmt.Println("Framework:", meta.Framework)
 		if len(meta.Variables) > 0 {
 			fmt.Println("\nVariables:")
 			for name, v := range meta.Variables {

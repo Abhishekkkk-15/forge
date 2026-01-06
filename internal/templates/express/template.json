@@ -2,7 +2,7 @@
   "name": "express-ts",
   "displayName": "Express + TypeScript",
   "description": "Production-ready Express API using TypeScript",
-  "language": "typescript",
+  "language": "javascript",
   "framework": "express",
 
   "variables": {

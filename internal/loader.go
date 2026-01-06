@@ -6,7 +6,6 @@ import (
 )
 
 func LoadMetadata(tempalteName string) (*TemplateMetadata, error) {
-	fmt.Print(tempalteName)
 	path := fmt.Sprintf("templates/%s/template.json", tempalteName)
 	data, err := TemplateFS.ReadFile(path)
 	if err != nil {
