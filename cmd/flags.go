@@ -44,9 +44,9 @@ func registerFlags(cmd *cobra.Command, meta *internal.TemplateMetadata) {
 }
 
 func runInit(cmd *cobra.Command, args []string) error {
-	if len(args) > 0 {
+	if len(args) < 2 {
 		pterm.Error.Println("project-name not provided")
-		pterm.Info.Printfln("Use forge 'info <command>' to use its available flags")
+		pterm.Info.Printfln("Use forge 'info <command>' to see its available flags")
 		return nil
 	}
 	templateName := args[0]
@@ -82,7 +82,7 @@ func runInit(cmd *cobra.Command, args []string) error {
 	src := "templates/" + templateName
 
 	spinner, _ := pterm.DefaultSpinner.Start("Creating project...")
-	copyTemplate(src, projectName, data)
+	err = copyTemplate(src, projectName, data)
 
 	if err != nil {
 		spinner.Fail("Failed to create project")
@@ -91,7 +91,7 @@ func runInit(cmd *cobra.Command, args []string) error {
 
 	spinner.Success("Project files generated")
 	postCommandPrint(*meta, data)
-	return nil
+	return err
 }
 
 func postCommandPrint(meta internal.TemplateMetadata, data map[string]any) {
@@ -103,7 +103,7 @@ func postCommandPrint(meta internal.TemplateMetadata, data map[string]any) {
 			var buf bytes.Buffer
 			_ = tmpl.Execute(&buf, data)
 
-			pterm.Info.Printf("  %s\n", step)
+			pterm.Info.Printf("  %s\n", buf.String())
 		}
 	}
 }

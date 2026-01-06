@@ -5,8 +5,13 @@ package main
 
 import (
 	"forge/cmd"
+
+	"github.com/pterm/pterm"
 )
 
 func main() {
+
+	pterm.EnableStyling()
+
 	cmd.Execute()
 }

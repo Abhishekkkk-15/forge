@@ -1,10 +1,10 @@
 {
-  "name": "express-ts",
+  "name": "express",
   "displayName": "Express + TypeScript",
   "description": "Production-ready Express API using TypeScript",
-  "language": "typescript",
+  "language": "javascript",
   "framework": "express",
-  "postCreate": [
+"postCreate": [
   "cd x",
   "npm install",
   "npm run dev"
@@ -23,11 +23,17 @@
       "description": "Port number for the HTTP server"
     }
   },
+
   "flags": {
     "docker": {
       "type": "bool",
       "default": false,
       "description": "Include Dockerfile and .dockerignore"
+    },
+    "eslint": {
+      "type": "bool",
+      "default": false,
+      "description": "Include ESLint configuration"
     }
   }
 }
