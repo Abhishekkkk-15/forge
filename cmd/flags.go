@@ -40,6 +40,9 @@ func registerFlags(cmd *cobra.Command, meta *internal.TemplateMetadata) {
 }
 
 func runInit(cmd *cobra.Command, args []string) error {
+	if args[1] == " " {
+		return fmt.Errorf("project name not provided")
+	}
 	templateName := args[0]
 	projectName := args[1]
 

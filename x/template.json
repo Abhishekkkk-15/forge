@@ -1,0 +1,20 @@
+{
+  "name": "go-gin-api",
+  "displayName": "Go API (Gin)",
+  "description": "Production-ready Go API using Gin framework",
+  "language": "go",
+  "framework": "gin",
+  "variables": {
+    "ProjectName": {
+      "type": "string",
+      "source": "arg"
+    },
+    "Port": {
+      "type": "number",
+      "source": "flag",
+      "flag": "port",
+      "default": 8080,
+      "description": "HTTP server port"
+    }
+  }
+}
