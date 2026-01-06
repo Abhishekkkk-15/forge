@@ -8,33 +8,29 @@ import (
 )
 
 func registerFlags(cmd *cobra.Command, meta *internal.TemplateMetadata) {
-	for name, variable := range meta.Variables {
+	for _, variable := range meta.Variables {
 		if variable.Source != "flag" {
 			continue
 		}
-		value := variable.Default
-		dynamicFlages[name] = &value
 
 		switch variable.Type {
 		case "string":
-			cmd.Flags().StringVar(
-				dynamicFlages[name].(*string),
+			cmd.Flags().String(
 				variable.Flag,
 				fmt.Sprint(variable.Default),
 				variable.Description,
 			)
+
 		case "number":
 			cmd.Flags().Int(
 				variable.Flag,
 				int(variable.Default.(float64)),
 				variable.Description,
 			)
-
 		}
 	}
+
 	for name, flag := range meta.Flags {
-		value := flag.Default
-		dynamicFlages[name] = &value
 		cmd.Flags().Bool(
 			name,
 			flag.Default.(bool),
@@ -51,14 +47,27 @@ func runInit(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+
+	// 1️⃣ Register flags dynamically
+	registerFlags(cmd, meta)
+
+	// 2️⃣ Now parse flags manually
+	if err := cmd.Flags().Parse(args[2:]); err != nil {
+		return err
+	}
+
+	// 3️⃣ Build template data
 	data := map[string]any{
 		"ProjectName": projectName,
+		"Description": meta.Description,
 	}
+
 	for name, variable := range meta.Variables {
 		if variable.Source == "flag" {
 			data[name] = cmd.Flag(variable.Flag).Value.String()
 		}
 	}
+
 	for name := range meta.Flags {
 		val, _ := cmd.Flags().GetBool(name)
 		data[name] = val
@@ -66,5 +75,4 @@ func runInit(cmd *cobra.Command, args []string) error {
 
 	src := "templates/" + templateName
 	return copyTemplate(src, projectName, data)
-
 }

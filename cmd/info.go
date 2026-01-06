@@ -7,8 +7,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var dynamicFlages = map[string]any{}
-
 var infoCmd = &cobra.Command{
 	Use:   "info <template>",
 	Short: "Show information about a template",
@@ -28,6 +26,18 @@ var infoCmd = &cobra.Command{
 					"  %s (%s) default=%v\n    %s\n",
 					name,
 					v.Flag,
+					v.Default,
+					v.Description,
+				)
+			}
+		}
+		if len(meta.Flags) > 0 {
+			fmt.Println("\nFlags:")
+			for name, v := range meta.Flags {
+				fmt.Printf(
+					"  %s (%s) default=%v\n    %s\n",
+					name,
+					v.Type,
 					v.Default,
 					v.Description,
 				)

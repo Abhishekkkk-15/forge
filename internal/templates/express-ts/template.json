@@ -1,20 +1,28 @@
 {
   "name": "express-ts",
   "displayName": "Express + TypeScript",
-  "description": "Production-ready Express API with TypeScript",
+  "description": "Production-ready Express API using TypeScript",
   "language": "typescript",
   "framework": "express",
   "variables": {
-    "port": {
-      "flag": "--port",
+    "ProjectName": {
+      "type": "string",
+      "source": "arg",
+      "description": "Name of the project"
+    },
+    "Port": {
       "type": "number",
+      "source": "flag",
+      "flag": "port",
       "default": 3000,
-      "description": "Port number for the server"
+      "description": "Port number for the HTTP server"
     }
   },
   "flags": {
-    "ts": {
-      "description": "Use TypeScript"
+    "docker": {
+      "type": "bool",
+      "default": false,
+      "description": "Include Dockerfile and .dockerignore"
     }
   }
 }
