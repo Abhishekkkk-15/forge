@@ -1,8 +1,12 @@
 package cmd
 
 import (
+	"bytes"
 	"fmt"
 	"forge/internal"
+	"text/template"
+
+	"github.com/pterm/pterm"
 
 	"github.com/spf13/cobra"
 )
@@ -40,8 +44,10 @@ func registerFlags(cmd *cobra.Command, meta *internal.TemplateMetadata) {
 }
 
 func runInit(cmd *cobra.Command, args []string) error {
-	if args[1] == " " {
-		return fmt.Errorf("project name not provided")
+	if len(args) > 0 {
+		pterm.Error.Println("project-name not provided")
+		pterm.Info.Printfln("Use forge 'info <command>' to use its available flags")
+		return nil
 	}
 	templateName := args[0]
 	projectName := args[1]
@@ -51,15 +57,12 @@ func runInit(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	// 1️⃣ Register flags dynamically
 	registerFlags(cmd, meta)
 
-	// 2️⃣ Now parse flags manually
 	if err := cmd.Flags().Parse(args[2:]); err != nil {
 		return err
 	}
 
-	// 3️⃣ Build template data
 	data := map[string]any{
 		"ProjectName": projectName,
 		"Description": meta.Description,
@@ -77,5 +80,30 @@ func runInit(cmd *cobra.Command, args []string) error {
 	}
 
 	src := "templates/" + templateName
-	return copyTemplate(src, projectName, data)
+
+	spinner, _ := pterm.DefaultSpinner.Start("Creating project...")
+	copyTemplate(src, projectName, data)
+
+	if err != nil {
+		spinner.Fail("Failed to create project")
+		return err
+	}
+
+	spinner.Success("Project files generated")
+	postCommandPrint(*meta, data)
+	return nil
+}
+
+func postCommandPrint(meta internal.TemplateMetadata, data map[string]any) {
+	if len(meta.PostCreate) > 0 {
+		pterm.DefaultSection.Println("Next steps")
+		for _, step := range meta.PostCreate {
+			tmpl, _ := template.New("step").Parse(step)
+
+			var buf bytes.Buffer
+			_ = tmpl.Execute(&buf, data)
+
+			pterm.Info.Printf("  %s\n", step)
+		}
+	}
 }

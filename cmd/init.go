@@ -33,7 +33,6 @@ func copyTemplate(src, dest string, data map[string]any) error {
 		}
 		relPath := path[len(src):]
 		targetPath := filepath.Join(dest, relPath)
-		// remove .tmpl extension
 		if strings.HasSuffix(targetPath, ".tmpl") {
 			targetPath = strings.TrimSuffix(targetPath, ".tmpl")
 		}

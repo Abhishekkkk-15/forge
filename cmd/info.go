@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"forge/internal"
 
+	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 )
 
@@ -17,34 +18,61 @@ var infoCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Println("Name:       ", meta.Name)
-		fmt.Println("Description:", meta.Description)
-		fmt.Println("Language:", meta.Language)
-		fmt.Println("Framework:", meta.Framework)
+		pterm.DefaultSection.Println("Template Info")
+
+		pterm.DefaultTable.
+			WithData(pterm.TableData{
+				{"Name", meta.Name},
+				{"Description", meta.Description},
+				{"Language", meta.Language},
+				{"Framework", meta.Framework},
+			}).
+			Render()
+
 		if len(meta.Variables) > 0 {
-			fmt.Println("\nVariables:")
+			pterm.DefaultSection.Println("Variables")
+
+			data := pterm.TableData{
+				{"Name", "Flag", "Default", "Description"},
+			}
+
 			for name, v := range meta.Variables {
-				fmt.Printf(
-					"  %s (%s) default=%v\n    %s\n",
+				data = append(data, []string{
 					name,
 					v.Flag,
-					v.Default,
+					fmt.Sprint(v.Default),
 					v.Description,
-				)
+				})
 			}
+
+			pterm.DefaultTable.
+				WithHasHeader().
+				WithData(data).
+				Render()
 		}
+
 		if len(meta.Flags) > 0 {
-			fmt.Println("\nFlags:")
+			pterm.DefaultSection.Println("Flags")
+
+			data := pterm.TableData{
+				{"Flag", "Type", "Default", "Description"},
+			}
+
 			for name, v := range meta.Flags {
-				fmt.Printf(
-					"  %s (%s) default=%v\n    %s\n",
+				data = append(data, []string{
 					name,
 					v.Type,
-					v.Default,
+					fmt.Sprint(v.Default),
 					v.Description,
-				)
+				})
 			}
+
+			pterm.DefaultTable.
+				WithHasHeader().
+				WithData(data).
+				Render()
 		}
+
 		return nil
 	},
 }

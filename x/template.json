@@ -1,20 +1,33 @@
 {
-  "name": "go-gin-api",
-  "displayName": "Go API (Gin)",
-  "description": "Production-ready Go API using Gin framework",
-  "language": "go",
-  "framework": "gin",
+  "name": "express-ts",
+  "displayName": "Express + TypeScript",
+  "description": "Production-ready Express API using TypeScript",
+  "language": "typescript",
+  "framework": "express",
+  "postCreate": [
+  "cd x",
+  "npm install",
+  "npm run dev"
+],
   "variables": {
     "ProjectName": {
       "type": "string",
-      "source": "arg"
+      "source": "arg",
+      "description": "Name of the project"
     },
     "Port": {
       "type": "number",
       "source": "flag",
       "flag": "port",
-      "default": 8080,
-      "description": "HTTP server port"
+      "default": 3000,
+      "description": "Port number for the HTTP server"
+    }
+  },
+  "flags": {
+    "docker": {
+      "type": "bool",
+      "default": false,
+      "description": "Include Dockerfile and .dockerignore"
     }
   }
 }

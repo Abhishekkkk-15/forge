@@ -4,6 +4,11 @@
   "description": "Minimal production-ready Go API using net/http",
   "language": "go",
   "framework": "net/http",
+  "postCreate": [
+  "cd {{.ProjectName}}",
+  "go mod tidy",
+  "go run ./cmd/server"
+],
   "variables": {
     "ProjectName": {
       "type": "string",
