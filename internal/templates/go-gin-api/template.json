@@ -4,6 +4,11 @@
   "description": "Production-ready Go API using Gin framework",
   "language": "go",
   "framework": "gin",
+  "postCreate": [
+  "cd {{.ProjectName}}",
+  "go mod tidy",
+  "go run ./cmd/server"
+],
   "variables": {
     "ProjectName": {
       "type": "string",

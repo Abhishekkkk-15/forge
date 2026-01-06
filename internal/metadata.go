@@ -21,4 +21,5 @@ type TemplateMetadata struct {
 	Framework   string              `json:"framework"`
 	Language    string              `json:"language"`
 	Flags       map[string]Flag     `json:"flags"`
+	PostCreate  []string            `json:"postCreate"`
 }

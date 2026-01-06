@@ -4,7 +4,11 @@
   "description": "Production-ready Express API using TypeScript",
   "language": "javascript",
   "framework": "express",
-
+"postCreate": [
+  "cd {{.ProjectName}}",
+  "npm install",
+  "npm run dev"
+],
   "variables": {
     "ProjectName": {
       "type": "string",
