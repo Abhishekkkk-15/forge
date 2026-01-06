@@ -16,7 +16,7 @@ npm start
 ```
 
 ```http
-GET http://localhost:4000/api/health
+GET http://localhost:3000/api/health
 ```
 
 ```bash
@@ -24,5 +24,5 @@ docker build -t x .
 ```
 
 ```bash
-docker run -p 4000:4000 x
+docker run -p 3000:3000 x
 ````

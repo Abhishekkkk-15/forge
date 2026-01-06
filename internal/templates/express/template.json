@@ -1,5 +1,5 @@
 {
-  "name": "express-ts",
+  "name": "express",
   "displayName": "Express + TypeScript",
   "description": "Production-ready Express API using TypeScript",
   "language": "javascript",
