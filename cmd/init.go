@@ -21,6 +21,14 @@ var initCmd = &cobra.Command{
 	Use:   "init <template> <project-name>",
 	Short: "Create a new project from a template",
 	Args:  cobra.ExactArgs(2),
+	PreRunE: func(cmd *cobra.Command, args []string) error {
+		meta, err := internal.LoadMetadata(args[0])
+		if err != nil {
+			return err
+		}
+		registerFlags(cmd, meta)
+		return nil
+	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		templateName := args[0]
 		projectName := args[1]
