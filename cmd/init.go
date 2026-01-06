@@ -6,6 +6,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strings"
 	"text/template"
 
 	"github.com/spf13/cobra"
@@ -31,7 +32,10 @@ func copyTemplate(src, dest string, data map[string]any) error {
 		}
 		relPath := path[len(src):]
 		targetPath := filepath.Join(dest, relPath)
-
+		// remove .tmpl extension
+		if strings.HasSuffix(targetPath, ".tmpl") {
+			targetPath = strings.TrimSuffix(targetPath, ".tmpl")
+		}
 		if d.IsDir() {
 			return os.MkdirAll(targetPath, 0755)
 		}
