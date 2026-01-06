@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"bytes"
+	"fmt"
 	"forge/internal"
 	"io/fs"
 	"os"
@@ -38,7 +39,7 @@ func copyTemplate(src, dest string, data map[string]any) error {
 
 		content, err := internal.TemplateFS.ReadFile(path)
 		if err != nil {
-			return err
+			return fmt.Errorf("template not found")
 		}
 
 		tmpl, err := template.New("file").Parse(string(content))
