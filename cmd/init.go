@@ -12,6 +12,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	port  int
+	useTs bool
+)
+
 var initCmd = &cobra.Command{
 	Use:   "init <template> <project-name>",
 	Short: "Create a new project from a template",
@@ -21,7 +26,9 @@ var initCmd = &cobra.Command{
 		projectName := args[1]
 
 		src := "templates/" + templateName
-
+		if templateName == "express" && useTs {
+			src = "templates/express-ts"
+		}
 		if _, err := internal.TemplateFS.ReadDir(src); err != nil {
 			return fmt.Errorf("template '%s' not found", templateName)
 		}
@@ -30,20 +37,37 @@ var initCmd = &cobra.Command{
 			return fmt.Errorf("directory '%s' already exists", projectName)
 		}
 
-		data := map[string]string{
+		data := map[string]any{
 			"ProjectName": projectName,
+			"Port":        port,
+			"UseTs":       useTs,
 		}
 
 		return copyTemplate(src, projectName, data)
 	},
 }
 
-func copyTemplate(src, dest string, data map[string]string) error {
+func init() {
+	rootCmd.AddCommand(initCmd)
+	initCmd.Flags().IntVar(
+		&port,
+		"port",
+		8000,
+		"Port number of the server",
+	)
+	initCmd.Flags().BoolVar(
+		&useTs,
+		"ts",
+		false,
+		"Use typescript template",
+	)
+}
+
+func copyTemplate(src, dest string, data map[string]any) error {
 	return fs.WalkDir(internal.TemplateFS, src, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
-
 		relPath := path[len(src):]
 		targetPath := filepath.Join(dest, relPath)
 
@@ -67,8 +91,4 @@ func copyTemplate(src, dest string, data map[string]string) error {
 
 		return os.WriteFile(targetPath, buf.Bytes(), 0644) // lilepath | data | file permission's rw-r--r--
 	})
-}
-
-func init() {
-	rootCmd.AddCommand(initCmd)
 }

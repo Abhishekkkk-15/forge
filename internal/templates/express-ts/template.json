@@ -1,0 +1,6 @@
+{
+  "name": "express-ts",
+  "description": "Production-ready Express + TypeScript API",
+  "flags": ["--port", "--ts"],
+  "defaultPort": 3000
+}
